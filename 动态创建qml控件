@@ -1,0 +1,35 @@
+//方式1：qml中使用Qt.createComponent方法
+function createTodoItem(parent){
+    var component = Qt.createComponent("todoItem.qml");
+    if (component.status == Component.Ready) {
+        var todoComponent = component.createObject(parent);
+    }
+    else{
+        component.statusChanged.connect(
+            function(){
+                if (component.status == Component.Ready) {
+                    var todoComponent = component.createObject(todoList);
+                } else if (component.status == Component.Error) {
+                    console.log("Error loading component:", component.errorString());
+                }
+            }
+        );
+    }
+}
+
+/*
+备注：
+如果qml来至网络文件，并且需要加载多个qml的情况，有可能出现控件加载顺序与预期顺序不一致的情况。
+这种情况发生时，可以考虑采用递归的方式加载，即监听statusChanged信号，status变为Ready后再递归加载下一个控件
+*/
+
+//方式2：qml中使用Qt.createQmlObject方法
+dialog = Qt.createQmlObject('import QtQuick 2.2;import QtQuick.Dialogs 1.1;MessageDialog{icon:StandardIcon.Information;title:"提示";text:"'+message+'"}'
+                            ,parent,'messageBox');
+/*
+备注：
+参数1：qml文本信息，这里需要注意的是在qml文件中，控件的属性之间是可以没有分号“；”的，但是使用此方法时，各个属性之间必须有分号。
+参数2：承载该控件的父控件
+参数3：一个标识，当创建失败时，系统以该标识输出日志，方便定位问题。
+另：该方法返回的是一个object类型，这个object具体类型取决于qml文本内容，比如上例中object就是MessageDialog类型。
+*/
