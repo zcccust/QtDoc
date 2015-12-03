@@ -1,0 +1,12 @@
+//1、响应回车事件
+Keys.onEnterPressed: {
+    console.debug("onEnterPressed")
+    button.btnAddClick();
+}
+Keys.onReturnPressed: {
+    console.debug("onReturnPressed")
+    button.btnAddClick();
+}
+/*
+在windows10平台上，大键盘上的Enter键会触发Keys.onReturnPressed信号，数字键盘的Enter键会触发Keys.onEnterPressed信号。
+*/
