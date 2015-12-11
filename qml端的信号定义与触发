@@ -1,0 +1,16 @@
+//信号的定义
+DropArea {
+    id:dropArea
+    signal dropDataSaved(var data);
+}
+
+//信号的触发
+dropDataSaved(json);
+
+//信号的订阅
+Component.onCompleted: {
+    dropArea.dropDataSaved.connect(function(data){
+        console.debug("dropArea.dropDataSaved.connect:"+data);
+         pTaskView.model.append(data);
+    });
+}
